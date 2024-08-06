@@ -1,0 +1,16 @@
+package com.example.SpringBootRESTAPI.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+@RestController
+@RequestMapping("/customers")
+public class UserController {
+
+    @GetMapping("/message")
+    public String message() {
+        return "Hello, This is a REST API EndPoint....!";
+    }
+
+}

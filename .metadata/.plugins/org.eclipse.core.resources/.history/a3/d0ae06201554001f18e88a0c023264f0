@@ -1,0 +1,65 @@
+package com.example.SpringBootRESTAPI.controller;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.example.SpringBootRESTAPI.model.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    private List<User> users = new ArrayList<>();
+    
+    @GetMapping("/message")
+    public String Message() {
+    	String message="Hello, this is a REST API EndPoint";
+        return message;
+    }
+    
+    
+    
+    // Endpoint to get all users
+    @GetMapping
+    public List<User> getAllUsers() {
+        return users;
+    }
+
+    // Endpoint to get a user by ID
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable Long id) {
+        return users.stream()
+                    .filter(user -> user.getId().equals(id))
+                    .findFirst()
+                    .orElse(null);
+    }
+
+    // Endpoint to create a new user
+    @PostMapping
+    public User createUser(@RequestBody User user) {
+        users.add(user);
+        return user;
+    }
+
+    // Endpoint to update an existing user
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getId().equals(id)) {
+                user.setName(updatedUser.getName());
+                user.setEmail(updatedUser.getEmail());
+                return user;
+            }
+        }
+        return null;
+    }
+
+    // Endpoint to delete a user by ID
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        users.removeIf(user -> user.getId().equals(id));
+    }
+}
